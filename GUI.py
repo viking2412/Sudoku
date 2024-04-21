@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-from main import sudoku
+from main import solve_sudoku
 
 
 def sudoku_solver():
@@ -23,7 +23,7 @@ def sudoku_solver():
             for i in range(9):
                 for j in range(9):
                     temp_storage[(i, j)] = values[(i, j)]
-            solved = sudoku("GUI", values, cons)
+            solved = solve_sudoku("GUI", values, cons)
             if type(solved) == str:
                 sg.popup_ok(solved)
                 continue

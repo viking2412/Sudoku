@@ -15,7 +15,7 @@ def input_reader():
     return grid, constraints_lines
 
 
-def sudoku(mode, *args):
+def solve_sudoku(mode, *args):
     if mode == "FILE":
         initial_grid, cons = input_reader()
     else:
@@ -106,4 +106,9 @@ def killer_cage(model: cp_model, input_list, grid):
 
 
 if __name__ == '__main__':
-    sudoku("FILE")
+    solve_sudoku("FILE")
+#fileread окремо винести, замінити в правилах і+2 на zip, return model прибрати
+#mvc
+#solid
+#design patterns
+#додати можливість зчитати інпут з файлу у вікні
