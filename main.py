@@ -2,6 +2,11 @@ from ortools.sat.python import cp_model
 from sys import stdin
 
 
+def batched(iter, n):
+    for i in range(0, len(iter), n):
+        yield iter[i: i+n]
+
+
 def input_from_file():
     grid = []
     constraints_lines = []
@@ -77,38 +82,31 @@ def normal_sudoku_rules(model: cp_model, initial_grid):
 
 def thermo(model: cp_model, input_list, grid):
     for line in input_list:
-        thermometers = []
-        i = 1
         if "T" in line:
-            while i+1 < len(line):
-                thermometers.append((int(line[i])-1, int(line[i+1])-1))
-                i += 2
+            thermometers = [zip(input_list[1::2], input_list[2::2])]
             for i in range(len(thermometers)-1):
                 x, y = thermometers[i]
                 dx, dy = thermometers[i+1]
                 # Digits along the thermo rise from the bulb
-                model.add(grid[(x, y)] < grid[(dx, dy)])
+                model.add(grid[(int(x), int(y))] < grid[(int(dx), int(dy))])
     return
 
 
 def killer_cage(model: cp_model, input_list, grid):
     for line in input_list:
-        cage = []
-        i = 0
         if "C" in line:
             summ, indexes = int(line.partition(" ")[0][1:]), line.partition(" ")[2].strip()
-            while i+1 < len(indexes):
-                cage.append((int(indexes[i])-1, int(indexes[i+1])-1))
-                i += 2
+            cage = batched(indexes, 2)
             # digits summ to total in Cage
-            model.add(sum([grid[(i, j)] for (i, j) in cage]) == summ)
+            model.add(sum(grid[(int(x), int(y))] for (x, y) in cage) == summ)
             # all different in Cage
-            model.add_all_different(grid[(x, y)] for (x, y) in cage)
+            model.add_all_different(grid[(int(x), int(y))] for (x, y) in cage)
     return
 
 
 if __name__ == '__main__':
-    solve_sudoku("FILE", "", "")
+    for line in solve_sudoku("FILE", "", ""):
+        print(line)
 # fileread окремо винести +
 # замінити в правилах і+2 на zip
 # return model прибрати +

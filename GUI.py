@@ -2,6 +2,11 @@ import PySimpleGUI as sg
 from main import solve_sudoku
 
 
+class Interface:
+    def __init__(self):
+        self.__init__()
+
+
 def sudoku_solver():
     layout_l = [[sg.Input(0, size=3, p=0, justification="center",
                           border_width=1, key=(i, j)) for j in range(9)] for i in range(9)]
