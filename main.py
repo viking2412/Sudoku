@@ -83,7 +83,8 @@ def normal_sudoku_rules(model: cp_model, initial_grid):
 def thermo(model: cp_model, input_list, grid):
     for line in input_list:
         if "T" in line:
-            thermometers = [zip(input_list[1::2], input_list[2::2])]
+            thermometers = list(zip(line[1::2], line[2::2]))
+            print(thermometers)
             for i in range(len(thermometers)-1):
                 x, y = thermometers[i]
                 dx, dy = thermometers[i+1]
@@ -96,7 +97,7 @@ def killer_cage(model: cp_model, input_list, grid):
     for line in input_list:
         if "C" in line:
             summ, indexes = int(line.partition(" ")[0][1:]), line.partition(" ")[2].strip()
-            cage = batched(indexes, 2)
+            cage = list(batched(indexes, 2))
             # digits summ to total in Cage
             model.add(sum(grid[(int(x), int(y))] for (x, y) in cage) == summ)
             # all different in Cage
@@ -108,9 +109,12 @@ if __name__ == '__main__':
     for line in solve_sudoku("FILE", "", ""):
         print(line)
 # fileread окремо винести +
-# замінити в правилах і+2 на zip
+# замінити в правилах і+2 на zip +
 # return model прибрати +
 #mvc
 #solid
 #design patterns
 #додати можливість зчитати інпут з файлу у вікні
+#змінити гуі структуру на окремі класи з інтерфейсом та обчисленнями
+#pytest
+#github actions для тестування
